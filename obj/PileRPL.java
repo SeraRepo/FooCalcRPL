@@ -33,9 +33,11 @@ public class PileRPL {
 
     public void add() {
         if (nbStack > 1) {
-            // pile[nbStack - 2].imaginary_part = pile[nbStack - 2].imaginary_part + pile[nbStack - 1].imaginary_part;
-            // pile[nbStack - 2].interger_part = pile[nbStack - 2].interger_part + pile[nbStack - 1].interger_part;
-            // pile[nbStack - 1] = null;
+            for (int i = 0; i < pileObjDims; i++) {
+                pile[nbStack - 2].numbers[i].interger_part = pile[nbStack - 2].numbers[i].interger_part + pile[nbStack - 1].numbers[i].interger_part;
+                pile[nbStack - 2].numbers[i].imaginary_part = pile[nbStack - 2].numbers[i].imaginary_part + pile[nbStack - 1].numbers[i].imaginary_part;
+                pile[nbStack - 1] = null;
+            }
             nbStack--;
         } else {
             System.out.println("Not enough elements in stack.");
@@ -44,14 +46,66 @@ public class PileRPL {
 
     public void sub() {
          if (nbStack > 1) {
-            // pile[nbStack - 2].imaginary_part = pile[nbStack - 2].imaginary_part - pile[nbStack - 1].imaginary_part;
-            // pile[nbStack - 2].interger_part = pile[nbStack - 2].interger_part - pile[nbStack - 1].interger_part;
-            // pile[nbStack - 1] = null;
+            for (int i = 0; i < pileObjDims; i++) {
+                pile[nbStack - 2].numbers[i].interger_part = pile[nbStack - 2].numbers[i].interger_part - pile[nbStack - 1].numbers[i].interger_part;
+                pile[nbStack - 2].numbers[i].imaginary_part = pile[nbStack - 2].numbers[i].imaginary_part - pile[nbStack - 1].numbers[i].imaginary_part;
+                pile[nbStack - 1] = null;
+            }
             nbStack--;
         } else {
             System.out.println("Not enough elements in stack.");
         }
     }
+
+    public void mult() {
+        if (pileObjDims != 1) 
+            System.out.println("Operation only permitted for object of dimension 1");
+        else if (nbStack > 1) {
+            Double[] nb1 = new Double[2];
+            nb1[0] = pile[nbStack - 2].numbers[0].interger_part;
+            nb1[1] = pile[nbStack - 2].numbers[0].imaginary_part;
+            Double[] nb2 = new Double[2];
+            nb2[0] = pile[nbStack - 2].numbers[0].interger_part;
+            nb2[1] = pile[nbStack - 2].numbers[0].imaginary_part;
+
+            pile[nbStack - 2].numbers[0].interger_part = nb1[0] * nb2[0] + nb1[1] * nb2[1];
+            pile[nbStack - 2].numbers[0].imaginary_part =  nb1[0] * nb2[1] + nb1[1] * nb2[0];
+            pile[nbStack - 1] = null;
+            nbStack--;
+        } else {
+            System.out.println("Not enough elements in stack.");
+        }
+    }
+
+    public void div() {
+        if (pileObjDims != 1) 
+            System.out.println("Operation only permitted for object of dimension 1");
+        else if (nbStack > 1) {
+            Double[] nb1 = new Double[2];
+            nb1[0] = pile[nbStack - 2].numbers[0].interger_part;
+            nb1[1] = pile[nbStack - 2].numbers[0].imaginary_part;
+            Double[] nb2 = new Double[2];
+            nb2[0] = pile[nbStack - 2].numbers[0].interger_part;
+            nb2[1] = pile[nbStack - 2].numbers[0].imaginary_part;
+
+            if (nb2[0] == 0) {
+                pile[nbStack - 2].numbers[0].interger_part =  nb1[1] / nb2[1];
+                pile[nbStack - 2].numbers[0].imaginary_part =  nb1[0] / nb2[1] ;
+            } else if (nb2[1] == 0) {
+                pile[nbStack - 2].numbers[0].interger_part = nb1[0] / nb2[0] ;
+                pile[nbStack - 2].numbers[0].imaginary_part =   nb1[1] / nb2[0];
+            } else {
+                pile[nbStack - 2].numbers[0].interger_part = nb1[0] / nb2[0] + nb1[1] / nb2[1];
+                pile[nbStack - 2].numbers[0].imaginary_part =  nb1[0] / nb2[1] + nb1[1] / nb2[0];
+            }
+
+            pile[nbStack - 1] = null;
+            nbStack--;
+        } else {
+            System.out.println("Not enough elements in stack.");
+        }
+    }
+
 
     private static int getObjDims(String obj) {
         if (!obj.contains(","))

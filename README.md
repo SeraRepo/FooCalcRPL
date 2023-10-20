@@ -12,4 +12,10 @@
 - user local/remote
 - remote -> shared pile/ not shared pile 
 
--
+TODO
+    - add & sub for all dims
+    - mult & div only if dim 1
+    - pop
+    - log & replay
+    - quit
+    - remote
