@@ -27,9 +27,9 @@ public class PileRPL {
 
     public void add() {
         if (nbStack > 1) {
-            pile[nbStack - 2].imaginary_part = pile[nbStack - 2].imaginary_part + pile[nbStack - 1].imaginary_part;
-            pile[nbStack - 2].interger_part = pile[nbStack - 2].interger_part + pile[nbStack - 1].interger_part;
-            pile[nbStack - 1] = null;
+            // pile[nbStack - 2].imaginary_part = pile[nbStack - 2].imaginary_part + pile[nbStack - 1].imaginary_part;
+            // pile[nbStack - 2].interger_part = pile[nbStack - 2].interger_part + pile[nbStack - 1].interger_part;
+            // pile[nbStack - 1] = null;
             nbStack--;
         } else {
             System.out.println("Not enough elements in stack.");
@@ -38,9 +38,9 @@ public class PileRPL {
 
     public void sub() {
          if (nbStack > 1) {
-            pile[nbStack - 2].imaginary_part = pile[nbStack - 2].imaginary_part - pile[nbStack - 1].imaginary_part;
-            pile[nbStack - 2].interger_part = pile[nbStack - 2].interger_part - pile[nbStack - 1].interger_part;
-            pile[nbStack - 1] = null;
+            // pile[nbStack - 2].imaginary_part = pile[nbStack - 2].imaginary_part - pile[nbStack - 1].imaginary_part;
+            // pile[nbStack - 2].interger_part = pile[nbStack - 2].interger_part - pile[nbStack - 1].interger_part;
+            // pile[nbStack - 1] = null;
             nbStack--;
         } else {
             System.out.println("Not enough elements in stack.");
@@ -54,7 +54,7 @@ public class PileRPL {
                 if (pile[i] == null) {
                     representationString += i + ":\n" ;
                 } else {
-                    representationString += i + ":" + pile[i].interger_part + "+" + pile[i].imaginary_part + "i \n";
+                    representationString += i + ":" + pile[i].toString() + "\n";
                 }
             }
         }

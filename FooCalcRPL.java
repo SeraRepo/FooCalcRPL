@@ -20,11 +20,11 @@ public class FooCalcRPL {
             if (args.length == 0 ){
                 PileRPL pile = new PileRPL();
                 System.out.println(pile);
-                calcUI.commandParser(pile);
+                calcUI.commandUI(pile);
             } else if (isStringInt(args[0]) == true || args.length > 1) {
                 PileRPL pile = new PileRPL(Integer.parseInt(args[0]));
                 System.out.println(pile);
-                calcUI.commandParser(pile);
+                calcUI.commandUI(pile);
             } else {
                 System.out.println("Wrong type or number of arguments. It should be a single positive integer.");
             }

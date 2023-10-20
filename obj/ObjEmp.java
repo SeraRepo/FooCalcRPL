@@ -1,15 +1,36 @@
 package obj;
 
 public class ObjEmp {
-    protected int interger_part;
-    protected int imaginary_part;
+    protected Number[] numbers;
+    protected int dims;
 
-    public ObjEmp(int integer, int imaginary) {
-        this.interger_part = integer;
-        this.imaginary_part = imaginary;
+    public ObjEmp(String nums) {
+        String[] parsedNums = parseNums(nums);
+        this.dims = parsedNums.length;
+        this.numbers = new Number[parsedNums.length];
+
+        for (int i = 0; i < parsedNums.length; i++) {
+            this.numbers[i] = new Number(parsedNums[i]);
+        }
+    }
+
+    private static String[] parseNums(String nums) {
+        String[] numbersStrings;
+        nums = nums.replace("(", "");
+        nums = nums.replace(")", "");
+        numbersStrings = nums.split(",");
+
+        return numbersStrings;
     }
 
     public String toString() {
-        return Integer.toString(interger_part) + "+" +Integer.toString(imaginary_part) + "i";
+        String obj = "(";
+
+        for (int i = 0; i < numbers.length; i++) {
+            obj += numbers[i].toString();
+        }
+        obj += ")";
+
+        return obj;
     }
 }
