@@ -31,28 +31,28 @@ public class CalcUI {
             type = regexChecker(cmdParsed[i]);
             switch (type) {
                 case "sub":
-                    // pile.sub();
-                    System.out.println("Command sub received");
+                    pile.sub();
+                    // System.out.println("Command sub received");
                     break;
                 case "add":
-                    // pile.add();
-                    System.out.println("Command add received");
+                    pile.add();
+                    // System.out.println("Command add received");
                     break;
                 case "mult":
-                    // pile.add();
-                    System.out.println("Command mult received");
+                    pile.mult();
+                    // System.out.println("Command mult received");
                     break;
                 case "div":
-                    // pile.add();
-                    System.out.println("Command div received");
+                    pile.div();
+                    // System.out.println("Command div received");
                     break;
                 case "help":
                     // pile.add();
                     System.out.println("Command help received");
                     break;
                 case "number":
-                    // System.out.println("Number received: " + cmdParsed[i]);
                     pile.push(cmdParsed[i]);
+                    // System.out.println("Number received: " + cmdParsed[i]);
                     break;
                 default:
                     System.out.println("Command not found. Type \"help\" for help or \"quit\" to quit.");
