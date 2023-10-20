@@ -14,8 +14,6 @@ public class Number {
             double[] parsedNum = stringToNum(number);
             this.interger_part = parsedNum[0];
             this.imaginary_part = parsedNum[1];
-            System.out.println(this.interger_part);
-            System.out.println(this.imaginary_part);
         }
     }
 

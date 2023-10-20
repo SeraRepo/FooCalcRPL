@@ -5,6 +5,7 @@ public class PileRPL {
     protected ObjEmp[] pile;
     protected int nbMaxObj;
     protected int nbStack;
+    protected int pileObjDims = 0;
 
     public PileRPL() {
         this.nbMaxObj = NB_MAX_OBJ;
@@ -19,7 +20,11 @@ public class PileRPL {
     }
 
     public void push(String obj) {
-        if( nbStack < NB_MAX_OBJ) {
+        if (pileObjDims == 0)
+            pileObjDims = getObjDims(obj);
+        if (pileObjDims != getObjDims(obj))
+            System.out.println("Wrond dimension! Must be of dimension: " + getObjDims(obj));
+        else if ( nbStack < NB_MAX_OBJ) {
             ObjEmp newObj = new ObjEmp(obj);
             pile[nbStack] = newObj;
             nbStack++;
@@ -45,6 +50,15 @@ public class PileRPL {
             nbStack--;
         } else {
             System.out.println("Not enough elements in stack.");
+        }
+    }
+
+    private static int getObjDims(String obj) {
+        if (!obj.contains(","))
+            return 1;
+        else {
+            int dims = (int) obj.chars().filter(ch -> ch == ',').count() + 1;
+            return dims;
         }
     }
 
