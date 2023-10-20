@@ -71,7 +71,7 @@ public class CalcUI {
         final Matcher matcherDiv = patternDiv.matcher(command);
         final Pattern patternHelp = Pattern.compile("help", Pattern.CASE_INSENSITIVE);
         final Matcher matcherHelp = patternHelp.matcher(command);
-        final Pattern patternNumber = Pattern.compile("^(?=[iI.\\d+-])([+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)(?:[eE][+-]?\\d+)?(?![iI.\\d]))?([+-]?(?:(?:\\d+(?:\\.\\d*)?|\\.\\d+)(?:[eE][+-]?\\d+)?)?[iI])?$", Pattern.CASE_INSENSITIVE);
+        final Pattern patternNumber = Pattern.compile("^(?=[i.\\d+-])([+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)?(?![i.\\d]))?([+-]?(?:(?:\\d+(?:\\.\\d*)?|\\.\\d+)?)?[i])?$", Pattern.CASE_INSENSITIVE);
         final Matcher matcherNumber = patternNumber.matcher(command);
 
         if (matcherNumber.matches()) {
