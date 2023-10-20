@@ -18,9 +18,10 @@ public class PileRPL {
         nbStack = 0;
     }
 
-    public void push(ObjEmp obj) {
+    public void push(String obj) {
         if( nbStack < NB_MAX_OBJ) {
-            pile[nbStack] = obj;
+            ObjEmp newObj = new ObjEmp(obj);
+            pile[nbStack] = newObj;
             nbStack++;
         }
     }

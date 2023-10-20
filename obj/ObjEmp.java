@@ -10,7 +10,8 @@ public class ObjEmp {
         this.numbers = new Number[parsedNums.length];
 
         for (int i = 0; i < parsedNums.length; i++) {
-            this.numbers[i] = new Number(parsedNums[i]);
+            Number number = new Number(parsedNums[i]);
+            numbers[i] = number;
         }
     }
 
@@ -19,7 +20,6 @@ public class ObjEmp {
         nums = nums.replace("(", "");
         nums = nums.replace(")", "");
         numbersStrings = nums.split(",");
-
         return numbersStrings;
     }
 
@@ -28,6 +28,7 @@ public class ObjEmp {
 
         for (int i = 0; i < numbers.length; i++) {
             obj += numbers[i].toString();
+            obj += ",";
         }
         obj += ")";
 

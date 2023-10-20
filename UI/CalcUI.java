@@ -15,7 +15,7 @@ public class CalcUI {
         System.out.print("> ");
         command = input.readLine();
         while (command.length() > 0) {
-            commandParser(command);
+            commandParser(command, pile);
             System.out.println(pile);
             System.out.print("> ");
             command = input.readLine();
@@ -23,7 +23,7 @@ public class CalcUI {
         input.close();
     }
 
-    private static void commandParser(String cmd) {
+    private static void commandParser(String cmd, PileRPL pile) {
         String[] cmdParsed;
         String type;
         cmdParsed = cmd.split(";");
@@ -51,8 +51,8 @@ public class CalcUI {
                     System.out.println("Command help received");
                     break;
                 case "number":
-                    // pushComplexe(command, pile);
-                    System.out.println("Number received: " + cmdParsed[i]);
+                    // System.out.println("Number received: " + cmdParsed[i]);
+                    pile.push(cmdParsed[i]);
                     break;
                 default:
                     System.out.println("Command not found. Type \"help\" for help or \"quit\" to quit.");
@@ -71,10 +71,18 @@ public class CalcUI {
         final Matcher matcherDiv = patternDiv.matcher(command);
         final Pattern patternHelp = Pattern.compile("help", Pattern.CASE_INSENSITIVE);
         final Matcher matcherHelp = patternHelp.matcher(command);
-        final Pattern patternNumber = Pattern.compile("^(?=[i.\\d+-])([+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)?(?![i.\\d]))?([+-]?(?:(?:\\d+(?:\\.\\d*)?|\\.\\d+)?)?[i])?$", Pattern.CASE_INSENSITIVE);
-        final Matcher matcherNumber = patternNumber.matcher(command);
+        final Matcher matcherNumber;
+        boolean isNumberValid = false;
+        if ((command.charAt(0) == '(') && (command.charAt(command.length() -1) == ')') ) {
+            isNumberValid = checkIfVectorValid(command);
+        } else {
+            final Pattern patternNumber = Pattern.compile("^(?=[i.\\d+-])([+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)?(?![i.\\d]))?([+-]?(?:(?:\\d+(?:\\.\\d*)?|\\.\\d+)?)?[i])?$", Pattern.CASE_INSENSITIVE);
+            matcherNumber = patternNumber.matcher(command);
+            isNumberValid = matcherNumber.matches();
+        }
+        
 
-        if (matcherNumber.matches()) {
+        if (isNumberValid) {
             return "number";
         } else if (matcherAdd.matches()) {
             return "add";
@@ -89,6 +97,21 @@ public class CalcUI {
         } else {
             return "";
         }
+    }
 
+    private static boolean checkIfVectorValid(String vector) {
+        String[] numbersStrings;
+        vector = vector.replace("(", "");
+        vector = vector.replace(")", "");
+        numbersStrings = vector.split(",");
+
+        for (int i = 0; i < numbersStrings.length; i++) {
+            final Pattern patternNumber = Pattern.compile("^(?=[i.\\d+-])([+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)?(?![i.\\d]))?([+-]?(?:(?:\\d+(?:\\.\\d*)?|\\.\\d+)?)?[i])?$", Pattern.CASE_INSENSITIVE);
+            final Matcher matcherNumber = patternNumber.matcher(numbersStrings[i]);
+            if (matcherNumber.matches() == false) {
+                return false;
+            }
+        }
+        return true;
     }
 }

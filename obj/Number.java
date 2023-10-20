@@ -1,14 +1,22 @@
 package obj;
 
+import java.util.Arrays;
+
 public class Number {
     protected double interger_part;
     protected double imaginary_part;
 
     public Number(String number) {
-        double[] parsedNum = stringToNum(number);
-
-        this.interger_part = parsedNum[0];
-        this.imaginary_part = parsedNum[1];
+        if (number.equals("i")){
+            this.interger_part = 0;
+            this.imaginary_part = 1;
+        } else {
+            double[] parsedNum = stringToNum(number);
+            this.interger_part = parsedNum[0];
+            this.imaginary_part = parsedNum[1];
+            System.out.println(this.interger_part);
+            System.out.println(this.imaginary_part);
+        }
     }
 
     private static double[] stringToNum(String num) {
@@ -26,17 +34,21 @@ public class Number {
         }
 
         String[] split = num.split("[+-]");
+         if (num.charAt(0) == '-') {
+            split = Arrays.copyOfRange(split, 1, split.length);
+         }
         if (split[0].contains("i"))
             complexe = Double.parseDouble((realSign ? "+" : "-") + split[0].substring(0,split[0].length() - 1));
-        else
-            real = Double.parseDouble((realSign ? "+" : "-") + split[0]);
+        else{
+            real = Double.parseDouble((realSign ? '+' : '-') + split[0]);
+        }
         if (split.length > 1) {
             if (split[1].contains("i"))
                 complexe = Double.parseDouble((complexeSign ? "+" : "-") + split[1].substring(0,split[1].length() - 1));
             else
                 real = Double.parseDouble((complexeSign ? "+" : "-") + split[1]);
-}
-        
+        }
+
         number[0] =  real;
         number[1] = complexe;
         return number;
