@@ -1,29 +1,67 @@
 package UI;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.Reader;
+import java.io.Writer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import obj.PileRPL;
 
 public class CalcUI {
-    public void commandUI(PileRPL pile) throws IOException {
-        String command;
-        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-        System.out.print("> ");
-        command = input.readLine();
-        while (command.length() > 0) {
-            commandParser(command, pile);
-            System.out.println(pile);
-            System.out.print("> ");
-            command = input.readLine();
-        }
-        input.close();
+    private BufferedReader inputReader;
+    private PrintWriter outputWriter;
+
+    public CalcUI(Reader input, Writer output) {
+        this.inputReader = new BufferedReader(input);
+        this.outputWriter = new PrintWriter(output);
     }
 
-    private static void commandParser(String cmd, PileRPL pile) {
+    public void commandUI(PileRPL pile, boolean logged) throws IOException {
+        outputWriter.print("> ");
+        String command;
+        command = inputReader.readLine();
+        while (command != null && command.length() > 0) {
+            if (logged) {
+                try {
+                    printToFile(command);
+                } catch (IOException e) {
+                    outputWriter.println(e);
+                }
+            }
+            commandParser(command, pile);
+            outputWriter.println(pile);
+            outputWriter.flush();
+            outputWriter.print("> ");
+            command = inputReader.readLine();
+        }
+    }
+
+    private void replayLog(PileRPL pile, boolean b, BufferedReader lecteur) throws IOException {
+        String command;
+        command = lecteur.readLine();
+        while (command != null && command.length() > 0) {
+            commandParser(command, pile);
+            outputWriter.println(pile);
+            outputWriter.flush();
+            outputWriter.print("> ");
+            command = inputReader.readLine();
+        }
+    }
+
+    private static void printToFile(String command) throws IOException {
+        PrintWriter logCommand;
+        logCommand = new PrintWriter(new BufferedWriter(new FileWriter("log.txt")));
+        logCommand.close();
+    }
+
+    private void commandParser(String cmd, PileRPL pile) throws IOException {
         String[] cmdParsed;
         String type;
         cmdParsed = cmd.split(";");
@@ -32,30 +70,38 @@ public class CalcUI {
             switch (type) {
                 case "sub":
                     pile.sub();
-                    // System.out.println("Command sub received");
+                    // outputWriter.println("Command sub received");
                     break;
                 case "add":
                     pile.add();
-                    // System.out.println("Command add received");
+                    // outputWriter.println("Command add received");
                     break;
                 case "mult":
                     pile.mult();
-                    // System.out.println("Command mult received");
+                    // outputWriter.println("Command mult received");
                     break;
                 case "div":
                     pile.div();
-                    // System.out.println("Command div received");
+                    // outputWriter.println("Command div received");
                     break;
+                case "replay":
+                    BufferedReader lecteur = null;
+                    try {
+                        lecteur = new BufferedReader( new FileReader("log.txt" ) );
+                        replayLog(pile, false, lecteur);
+                    } catch( FileNotFoundException exc ) {
+                        outputWriter.println( "No log file present." );
+                    }
                 case "help":
                     // pile.add();
-                    System.out.println("Command help received");
+                    outputWriter.println("Command help received");
                     break;
                 case "number":
                     pile.push(cmdParsed[i]);
-                    // System.out.println("Number received: " + cmdParsed[i]);
+                    // outputWriter.println("Number received: " + cmdParsed[i]);
                     break;
                 default:
-                    System.out.println("Command not found. Type \"help\" for help or \"quit\" to quit.");
+                    outputWriter.println("Command not found. Type \"help\" for help or \"quit\" to quit.");
             }
         }
     }
@@ -69,6 +115,8 @@ public class CalcUI {
         final Matcher matcherMult = patternMult.matcher(command);
         final Pattern patternDiv = Pattern.compile("div", Pattern.CASE_INSENSITIVE);
         final Matcher matcherDiv = patternDiv.matcher(command);
+        final Pattern patternReplay = Pattern.compile("replay", Pattern.CASE_INSENSITIVE);
+        final Matcher matcherReplay = patternReplay.matcher(command);
         final Pattern patternHelp = Pattern.compile("help", Pattern.CASE_INSENSITIVE);
         final Matcher matcherHelp = patternHelp.matcher(command);
         final Matcher matcherNumber;
@@ -92,6 +140,8 @@ public class CalcUI {
             return "mult";
         } else if (matcherDiv.matches()) {
             return "div";
+        } else if (matcherReplay.matches()) {
+            return "replay";
         } else if (matcherHelp.matches()) {
             return "help";
         } else {
